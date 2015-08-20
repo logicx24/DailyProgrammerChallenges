@@ -54,17 +54,15 @@ class WordsAI:
 		return '_end' in curr
 
 	def permutations(self, letters):
-		if len(letters) == 1:
-			return letters
+		if len(letters) <= 1:
+			yield letters
+		else:
+			perms = self.permutations(letters[1:])
+			curr = letters[0]
 
-		perms = self.permutations(letters[1:])
-		curr = letters[0]
-
-		result = []
-		for perm in perms:
-			for i in range(len(perm) + 1):
-				result.append(perm[:i] + curr + perm[i:])
-		return result
+			for perm in perms:
+				for i in range(len(perm) + 1):
+					yield perm[:i] + curr + perm[i:]
 
 	def wordSearch(self):
 		tree = self.tree
@@ -74,10 +72,11 @@ class WordsAI:
 			for perm in self.permutations(letters):
 				if self.checkWord(perm) and perm not in successfulWords:
 					successfulWords.append(perm)
-			for i in range(1, len(letters)):
-				wordSearchHelper(tree, letters[:i] + letters[i+1:], successfulWords)
+			if len(letters) > 1:
+				for i in range(0, len(letters)):
+					wordSearchHelper(tree, letters[:i] + letters[i+1:], successfulWords)
 			return successfulWords
-
+			""""WKIXQKSU"""
 		return wordSearchHelper(tree, letters, [])
 
 	def chooseDiff(self, condition):
