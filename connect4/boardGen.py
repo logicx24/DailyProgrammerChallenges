@@ -1,4 +1,5 @@
 import random
+import conn
 
 def move(remaining):
     if not remaining:
@@ -22,4 +23,8 @@ def main():
             string += col
             string += "\n"
         n += 1
-    print(string)
+    return string
+
+def run():
+    for i in range(250):
+        open('test1')
