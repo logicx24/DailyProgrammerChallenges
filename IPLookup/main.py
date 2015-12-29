@@ -41,7 +41,7 @@ def runQueries(nameToRanges, queryFilename):
 	return orgToCount
 
 def toString(orgToCount):
-	return "\n".join(str(orgToCount[key]) + " - " + key for key in orgToCount)
+	return "\n".join(str(val) + " - " + key for key, val in sorted(orgToCount.items(), key=lambda x: -x[1]))
 
 if __name__ == "__main__":
 	print(toString(runQueries(parseRanges("smallinputranges.txt"), "smallQueryFile.txt")))
