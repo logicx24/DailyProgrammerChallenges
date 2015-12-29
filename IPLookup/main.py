@@ -34,7 +34,7 @@ def runQueries(nameToRanges, queryFilename):
 			ip = int(line.replace(".", ""))
 			if not itree.findSmallestRange(ip):
 				unknown += 1
-	orgToCount = {}
+	orgToCount = {"<unknown>": unknown}
 	for key in itree.intervalObjDict:
 		orgToCount[key] = sum(i.count for i in itree.intervalObjDict[key])
 
@@ -44,6 +44,12 @@ def toString(orgToCount):
 	return "\n".join(str(val) + " - " + key for key, val in sorted(orgToCount.items(), key=lambda x: -x[1]))
 
 if __name__ == "__main__":
-	print(toString(runQueries(parseRanges("smallinputranges.txt"), "smallQueryFile.txt")))
+	# print(toString(runQueries(parseRanges("smallinputranges.txt"), "smallQueryFile.txt")))
+	# print("-----------------------------------------------------")
+	# print(toString(runQueries(parseRanges("medInputRanges.txt"), "1kqueries.txt")))
+	# print("-----------------------------------------------------")
+	# print(toString(runQueries(parseRanges("medInputRanges.txt"), "queries10k.txt")))
+	# print("-----------------------------------------------------")
+	print(toString(runQueries(parseRanges("ips300k.txt"), "queries10k.txt")))
 
 

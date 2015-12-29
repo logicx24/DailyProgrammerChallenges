@@ -154,7 +154,7 @@ class IntervalTree:
 
 		stack = [self.head]
 		overlaps = []
-
+		#print("querying yo -----------------------------------")
 		def searchHelper(node, resList, stack):
 			if node.x_center > point:
 				for interval in node.centerBegin:
@@ -172,7 +172,6 @@ class IntervalTree:
 
 			elif node.x_center == point:
 				resList.extend(node.centerBegin)
-				return resList
 
 		while len(stack) > 0:
 			curr = stack.pop()
@@ -181,7 +180,8 @@ class IntervalTree:
 		found = min(overlaps, key=lambda x: x.size) if len(overlaps) > 0 else None
 		if found:
 			found.increment()
-
+		#print(found)
+		#print("------------------------------------------------")
 		return found
 
 
