@@ -1,3 +1,4 @@
+#https://www.reddit.com/r/dailyprogrammer/comments/3xdmtw/20151218_challenge_245_hard_guess_whois/
 import collections 
 
 class Interval:
