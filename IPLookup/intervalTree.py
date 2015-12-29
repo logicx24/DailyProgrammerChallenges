@@ -60,24 +60,44 @@ class IntervalTree:
 
 	def divideIntervals(self, intervals):
 
-		if len(intervals) == 0:
-			return 
+		def divide(intervals):
+			if len(intervals) == 0:
+				return 
 
-		left = []
-		right = []
-		center = []
+			left = []
+			right = []
+			center = []
 
-		centerPoint = self.findCenter(intervals)
+			centerPoint = self.findCenter(intervals)
 
-		for interval in intervals:
-			if interval.lessThan(centerPoint):
-				right.append(interval)
-			elif interval.greaterThan(centerPoint):
-				left.append(interval)
-			elif interval.within(centerPoint):
-				center.append(interval)
+			for interval in intervals:
+				if interval.lessThan(centerPoint):
+					right.append(interval)
+				elif interval.greaterThan(centerPoint):
+					left.append(interval)
+				elif interval.within(centerPoint):
+					center.append(interval)
+			return left, right, center, centerPoint
 
-		return TreeNode(centerPoint, self.divideIntervals(left), self.divideIntervals(right), center)
+		left, right, center, centerPoint = divide(intervals)
+		head = TreeNode(centerPoint, None, None, center)
+		stack = [(left, right, head)]
+
+		while len(stack) > 0:
+			left, right, prevNode = stack.pop()
+
+			if len(left) > 0:
+				left1, right1, center1, centerPoint1 = divide(left)
+				prevNode.leftNode = TreeNode(centerPoint1, None, None, center1)
+				stack.append((left1, right1, prevNode.leftNode))
+
+			if len(right) > 0:
+				left2, right2, center2, centerPoint2 = divide(right)
+				prevNode.rightNode = TreeNode(centerPoint2, None, None, center2)
+				stack.append((left2, right2, prevNode.rightNode))
+		return head
+
+			
 
 	def findSmallestRange(self, point):
 
@@ -105,6 +125,7 @@ class IntervalTree:
 				return resList
 
 		overlaps = searchHelper(self.head, [])
+		print(overlaps)
 		found = min(overlaps, key=lambda x: x.size) if len(overlaps) > 0 else None
 		found.increment()
 		return found
