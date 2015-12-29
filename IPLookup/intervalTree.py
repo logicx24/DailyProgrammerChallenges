@@ -97,9 +97,29 @@ class IntervalTree:
 				stack.append((left2, right2, prevNode.rightNode))
 		return head
 
-			
+	def divideIntervalsRecursive(self, intervals):
 
-	def findSmallestRange(self, point):
+		if len(intervals) == 0:
+			return 
+
+		left = []
+		right = []
+		center = []
+
+		centerPoint = self.findCenter(intervals)
+
+		for interval in intervals:
+			if interval.lessThan(centerPoint):
+				right.append(interval)
+			elif interval.greaterThan(centerPoint):
+				left.append(interval)
+			elif interval.within(centerPoint):
+				center.append(interval)
+
+		return TreeNode(centerPoint, self.divideIntervals(left), self.divideIntervals(right), center)
+
+			
+	def findSmallestRangeRecursive(self, point):
 
 		def searchHelper(node, resList):
 			if node.x_center > point:
@@ -125,10 +145,45 @@ class IntervalTree:
 				return resList
 
 		overlaps = searchHelper(self.head, [])
-		print(overlaps)
 		found = min(overlaps, key=lambda x: x.size) if len(overlaps) > 0 else None
 		found.increment()
 		return found
+
+	def findSmallestRange(self, point):
+
+		stack = [self.head]
+		overlaps = []
+
+		def searchHelper(node, resList, stack):
+			if node.x_center > point:
+				for interval in node.centerBegin:
+					if interval.start <= point:
+						resList.append(interval)
+				if node.leftNode:
+					stack.append(node.leftNode)
+
+			elif node.x_center < point:
+				for interval in node.centerEnd:
+					if interval.end >= point:
+						resList.append(interval)
+				if node.rightNode:
+					stack.append(node.rightNode)
+
+			elif node.x_center == point:
+				resList.extend(node.centerBegin)
+				return resList
+
+		while len(stack) > 0:
+			curr = stack.pop()
+			searchHelper(curr, overlaps, stack)
+
+		found = min(overlaps, key=lambda x: x.size) if len(overlaps) > 0 else None
+		if found:
+			found.increment()
+
+		return found
+
+
 
 if __name__ == "__main__":
 	intervals = {

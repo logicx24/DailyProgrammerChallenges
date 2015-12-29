@@ -4,7 +4,7 @@ import collections
 def parseRanges(filename): #returns the {name: [[range1, range2], [...], ...], ...} IntervalTree expects
 	nameToRanges = collections.defaultdict(list)
 	with open(filename) as f:
-		for line in f.read().strip().split("\n"):
+		for line in f.read().strip().split("\n"): #making sure zeros are added correctly
 			splitted = line.split(" ")
 			for i in range(len(splitted[:2])):
 				tmp = splitted[i].split(".")
@@ -15,5 +15,4 @@ def parseRanges(filename): #returns the {name: [[range1, range2], [...], ...], .
 				splitted[i] = ".".join(tmp)
 			range1 = [int(splitted[0].replace(".", "")), int(splitted[1].replace(".", ""))]
 			nameToRanges[" ".join(splitted[2:])].append(range1)
-	print(nameToRanges)	
 	return intervalTree.IntervalTree(nameToRanges)
