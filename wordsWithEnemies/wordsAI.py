@@ -77,7 +77,6 @@ class WordsAI:
 				for i in range(0, len(letters)):
 					wordSearchHelper(tree, letters[:i] + letters[i+1:], successfulWords)
 			return successfulWords
-			""""WKIXQKSU"""
 		return wordSearchHelper(tree, letters, [])
 
 	def chooseDiff(self, condition):
